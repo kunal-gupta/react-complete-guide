@@ -1,41 +1,45 @@
 import './App.css';
-import React, {Component} from 'react'
+import React, {useState} from 'react'
 import Person from './Person/Person'
 
-class App extends Component {
-  state = {
+const App = props =>{
+  /**
+  * You can have multiple useState hook and you can modify each useStateHook at a time.
+  */
+  const[personState, setPersonState] = useState({
     persons:[
       {name: "Vishal", age:25},
       {name: "Khushi", age:35},
       {name: "Aarohi", age:5}
     ],
     otherState: "this will be untouched"
-  }
+  });
 
-  switchNameHandler = () =>{
-    //console.log("Switch name clicked")
-    this.setState({
-        persons:[
-          {name: "Bharti", age:25},
-          {name: "Khushi", age:35},
-          {name: "Aarya", age:5}
-        ]
-    })
+  const switchNameHandler = () =>{
+  //console.log("Switch name clicked")
+  setPersonState({
+      persons:[
+        {name: "Bharti", age:25},
+        {name: "Khushi", age:35},
+        {name: "Aarya", age:5}
+      ]
+  });
     
-  }
+  };
 
-  render(){
-    return (
-      <div className="App">
-        <h1> Hi! I am a react App</h1>
-        <button onClick={this.switchNameHandler}>Switch name</button>
-        <Person name={this.state.persons[0].name} age={this.state.persons[0].age}/>
-        <Person name={this.state.persons[1].name} age={this.state.persons[1].age}/>
-        <Person name={this.state.persons[2].name} age={this.state.persons[2].age}>I am awesome, keep entertaining all</Person>
-      </div>
-      
-    );
-  }
+  return (
+    <div className="App">
+      <h1> Hi! I am a react App</h1>
+      <button onClick={switchNameHandler}>Switch name</button>
+      <Person name={personState.persons[0].name} age={personState.persons[0].age}/>
+      <Person name={personState.persons[1].name} age={personState.persons[1].age}/>
+      <Person name={personState.persons[2].name} age={personState.persons[2].age}>
+        I am awesome, keep entertaining all
+      </Person>
+    </div>
+    
+  );
+
 }
 
 export default App;
