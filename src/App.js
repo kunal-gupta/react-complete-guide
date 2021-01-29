@@ -1,63 +1,45 @@
 import './App.css';
-import React, {Component} from 'react'
-import Person from './Person/Person'
-
+import React, {Component} from 'react';
+import Validation from './Components/ValidationComponent';
+import Charcomponent from './Components/CharComponent';
 
 class App extends Component {
-  state = {
-    persons:[
-      {name: "Vishal", age:25},
-      {name: "Khushi", age:35},
-      {name: "Aarohi", age:5}
-    ],
-    otherState: "this will be untouched"
-  }
+  state = {data: {
+                    text: "Demo text"
+                  }
+          }
 
-  switchNameHandler = (newName) =>{
-    //console.log("Switch name clicked")
-    this.setState({
-        persons:[
-          {name: newName, age:25},
-          {name: "Khushi", age:35},
-          {name: "Aarya", age:5}
-        ]
-    })
-    
-  }
+  changeTextHandler = event =>{
+    let data = {...this.state.data};
+    data.text = event.target.value;
+    this.setState({data: data});
+  };
 
-  nameChangeHandler = (event) => {
-    this.setState({
-        persons:[
-          {name: "Bharti", age:25},
-          {name: "Khushi", age:35},
-          {name: event.target.value, age:5}
-        ]
-    })
-  }
+  clicks = (index) =>{
+    const data = this.state.data.text.split('');
+    data.splice(index, 1);
+    this.setState({data:{text:data.join('')}});
+  };
 
   render(){
-    const style={
-      backgroundColor: 'white',
-      border: "1px solid black",
-      cursor:'pointer'
-    }
+    let characters = null
+
+    
+    characters = (
+      <div>
+        {this.state.data.text.split('').map((c, index) => {
+          return <Charcomponent clicks={() => this.clicks(index)} character={c}/>
+          
+        })}
+      </div>
+    );
 
     return (
       <div className="App">
-        <h1> Hi! I am a react App</h1>
-        <button style = {style} onClick={() => this.switchNameHandler("Aaryas!!")}>Switch name</button>
-        <Person name={this.state.persons[0].name} 
-                age={this.state.persons[0].age}/>
-        <Person name={this.state.persons[1].name} 
-                age={this.state.persons[1].age}
-                click = {this.switchNameHandler.bind(this, "Aaru!!")}/>
-        <Person name={this.state.persons[2].name} 
-                age={this.state.persons[2].age}
-                changed={this.nameChangeHandler}
-                >
-            I am awesome, keep entertaining all
-                
-        </Person>
+        <input type="text" onChange={(event) => this.changeTextHandler(event)} value={this.state.data.text}/>
+        <p>{this.state.data.text.length}</p>
+        <Validation messageLength={this.state.data.text.length}></Validation>
+        {characters}
       </div>
       
     );
